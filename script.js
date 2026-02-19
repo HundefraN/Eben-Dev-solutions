@@ -3,19 +3,29 @@
    MereqTech-Inspired Animations & Full-Screen Overlay Menu
    ====================================================================== */
 
+const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
 /* ===== PARTICLE CANVAS BACKGROUND ===== */
 const canvas = document.getElementById('particle-canvas');
-if (canvas) {
+if (canvas && !isTouchDevice) { // Disable particles on touch devices for performance
   const ctx = canvas.getContext('2d');
   let particles = [];
   let mouse = { x: -1000, y: -1000 };
+  let animationFrameId;
 
   function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    initParticles();
   }
+  
+  // Debounce resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resizeCanvas, 100);
+  });
   resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
 
   class Particle {
     constructor() { this.reset(); }
@@ -55,27 +65,28 @@ if (canvas) {
 
   function initParticles() {
     particles = [];
-    const count = Math.min(Math.floor((canvas.width * canvas.height) / 12000), 120);
+    const count = Math.min(Math.floor((canvas.width * canvas.height) / 15000), 80); // Reduced density
     for (let i = 0; i < count; i++) particles.push(new Particle());
   }
-  initParticles();
 
   function drawConnections() {
     const strokeColor = '177, 148, 76'; // Gold
     const baseOpacity = 0.06;
 
     for (let i = 0; i < particles.length; i++) {
+        // Optimization: check distance before drawing path
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 130) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(${strokeColor}, ${baseOpacity * (1 - dist / 130)})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
+        const distSq = dx * dx + dy * dy; // Use squared distance to avoid sqrt
+        if (distSq < 16900) { // 130 * 130
+            const dist = Math.sqrt(distSq);
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${strokeColor}, ${baseOpacity * (1 - dist / 130)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
         }
       }
     }
@@ -85,12 +96,11 @@ if (canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => { p.update(); p.draw(); });
     drawConnections();
-    requestAnimationFrame(animateParticles);
+    animationFrameId = requestAnimationFrame(animateParticles);
   }
   animateParticles();
 
   window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-  window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
 }
 
 /* ===== FULL-SCREEN OVERLAY MENU (MereqTech-style) ===== */
@@ -110,15 +120,19 @@ function toggleMenu() {
 
 if (navToggle) {
   navToggle.addEventListener('click', toggleMenu);
+  // Add touchstart for faster response on mobile
+  navToggle.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevent ghost click
+      toggleMenu();
+  }, { passive: false });
 }
 
 // Close menu when clicking a menu item
 overlayMenuItems.forEach(item => {
-  item.addEventListener('click', () => {
-    if (menuOpen) {
-      toggleMenu();
-    }
-  });
+  const close = () => {
+      if (menuOpen) toggleMenu();
+  };
+  item.addEventListener('click', close);
 });
 
 // Close menu with Escape key
@@ -128,96 +142,116 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* ===== SCROLL-BASED ACTIVE LINK ===== */
+/* ===== SCROLL-BASED ACTIVE LINK & HEADER ===== */
 const sections = document.querySelectorAll('section[id]');
-function scrollActive() {
+const header = document.getElementById('header');
+const scrollUpBtn = document.getElementById('scroll-up');
+
+function handleScroll() {
   const scrollY = window.pageYOffset;
+  
+  // Active Link
   sections.forEach(section => {
     const sectionHeight = section.offsetHeight;
     const sectionTop = section.offsetTop - 120;
     const sectionId = section.getAttribute('id');
-    // Update overlay menu items
-    overlayMenuItems.forEach(item => {
-      if (item.getAttribute('href') === `#${sectionId}`) {
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          item.style.color = 'var(--accent-primary)';
-        } else {
-          item.style.color = '';
+    
+    // Only update if menu is actually visible or relevant (optimization)
+    if(menuOpen) {
+        overlayMenuItems.forEach(item => {
+        if (item.getAttribute('href') === `#${sectionId}`) {
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            item.style.color = 'var(--accent-primary)';
+            } else {
+            item.style.color = '';
+            }
         }
-      }
-    });
+        });
+    }
   });
-}
-window.addEventListener('scroll', scrollActive);
 
-/* ===== HEADER SCROLL EFFECT ===== */
-function scrollHeader() {
-  const header = document.getElementById('header');
+  // Header Background
   if (header) {
-    header.classList.toggle('scroll-header', window.scrollY >= 50);
+    if (scrollY >= 50) header.classList.add('scroll-header');
+    else header.classList.remove('scroll-header');
   }
-}
-window.addEventListener('scroll', scrollHeader);
 
-/* ===== SCROLL UP ===== */
-function scrollUp() {
-  const scrollUpBtn = document.getElementById('scroll-up');
+  // Scroll Up Button
   if (scrollUpBtn) {
-    scrollUpBtn.classList.toggle('show-scroll', window.scrollY >= 400);
+     if (scrollY >= 400) scrollUpBtn.classList.add('show-scroll');
+     else scrollUpBtn.classList.remove('show-scroll');
   }
 }
-window.addEventListener('scroll', scrollUp);
+
+// Throttled Scroll Event
+let ticking = false;
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+        });
+        ticking = true;
+    }
+});
+// Also add resize listener for scroll header adjustments if needed, but not critical.
 
 /* ===== CUSTOM CURSOR ===== */
 const cursorDot = document.querySelector('[data-cursor-dot]');
 const cursorOutline = document.querySelector('[data-cursor-outline]');
 
-if (cursorOutline) {
-  cursorOutline.style.transition = 'left 0.06s ease-out, top 0.06s ease-out, width 0.2s, height 0.2s, border-color 0.2s';
-}
-
-let cursorX = 0, cursorY = 0;
-let dotX = 0, dotY = 0;
-
-window.addEventListener('mousemove', e => {
-  cursorX = e.clientX;
-  cursorY = e.clientY;
-});
-
-function animateCursor() {
-  if (cursorDot) {
-    dotX += (cursorX - dotX) * 0.4;
-    dotY += (cursorY - dotY) * 0.4;
-    cursorDot.style.left = `${cursorX}px`;
-    cursorDot.style.top = `${cursorY}px`;
-  }
-  if (cursorOutline) {
-    cursorOutline.style.left = `${dotX}px`;
-    cursorOutline.style.top = `${dotY}px`;
-  }
-  requestAnimationFrame(animateCursor);
-}
-animateCursor();
-
-const hoverTargets = document.querySelectorAll('a, button, .service-card, .portfolio__card, .testimonial-card, .contact__card, .overlay-menu-item');
-hoverTargets.forEach(el => {
-  el.addEventListener('mouseenter', () => {
+if (!isTouchDevice) {
     if (cursorOutline) {
-      cursorOutline.style.width = '64px';
-      cursorOutline.style.height = '64px';
-      cursorOutline.style.borderColor = 'rgba(177, 148, 76, 0.5)';
+    cursorOutline.style.transition = 'left 0.06s ease-out, top 0.06s ease-out, width 0.2s, height 0.2s, border-color 0.2s';
     }
-    if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(2)';
-  });
-  el.addEventListener('mouseleave', () => {
+
+    let cursorX = 0, cursorY = 0;
+    let dotX = 0, dotY = 0;
+
+    window.addEventListener('mousemove', e => {
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+    });
+
+    function animateCursor() {
+    if (cursorDot) {
+        dotX += (cursorX - dotX) * 0.4;
+        dotY += (cursorY - dotY) * 0.4;
+        cursorDot.style.left = `${cursorX}px`;
+        cursorDot.style.top = `${cursorY}px`;
+    }
     if (cursorOutline) {
-      cursorOutline.style.width = '42px';
-      cursorOutline.style.height = '42px';
-      cursorOutline.style.borderColor = 'rgba(177, 148, 76, 0.35)';
+        cursorOutline.style.left = `${dotX}px`;
+        cursorOutline.style.top = `${dotY}px`;
     }
-    if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
-  });
-});
+    requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    const hoverTargets = document.querySelectorAll('a, button, .service-card, .portfolio__card, .testimonial-card, .contact__card, .overlay-menu-item');
+    hoverTargets.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        if (cursorOutline) {
+        cursorOutline.style.width = '64px';
+        cursorOutline.style.height = '64px';
+        cursorOutline.style.borderColor = 'rgba(177, 148, 76, 0.5)';
+        }
+        if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(2)';
+    });
+    el.addEventListener('mouseleave', () => {
+        if (cursorOutline) {
+        cursorOutline.style.width = '42px';
+        cursorOutline.style.height = '42px';
+        cursorOutline.style.borderColor = 'rgba(177, 148, 76, 0.35)';
+        }
+        if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+    });
+} else {
+    // Hide custom cursor on touch devices to avoid ghost elements
+    if(cursorDot) cursorDot.style.display = 'none';
+    if(cursorOutline) cursorOutline.style.display = 'none';
+}
 
 /* ===== ENHANCED INTERSECTION OBSERVER — STAGGERED REVEAL (MereqTech-style) ===== */
 const revealElements = document.querySelectorAll(
@@ -233,7 +267,7 @@ const revealObserver = new IntersectionObserver((entries) => {
       revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.1 }); // Low threshold for earlier reveal on mobile
 
 revealElements.forEach((el) => {
   el.classList.add('reveal');
@@ -241,46 +275,49 @@ revealElements.forEach((el) => {
 });
 
 /* ===== TILT EFFECT FOR CARDS (Realistic & Free Style) ===== */
-const tiltElements = document.querySelectorAll('.service-card, .hero__stats, .portfolio__card, .testimonial-card, .contact__card, .hero__float-card');
+if (!isTouchDevice) {
+    const tiltElements = document.querySelectorAll('.service-card, .hero__stats, .portfolio__card, .testimonial-card, .contact__card, .hero__float-card');
 
-tiltElements.forEach(el => {
-  el.addEventListener('mousemove', handleTilt);
-  el.addEventListener('mouseleave', resetTilt);
-});
+    tiltElements.forEach(el => {
+    el.addEventListener('mousemove', handleTilt);
+    el.addEventListener('mouseleave', resetTilt);
+    });
 
-function handleTilt(e) {
-  const el = e.currentTarget;
-  const rect = el.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-  
-  const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
-  const rotateY = ((x - centerX) / centerX) * 10;
-  
-  el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-  el.style.transition = 'transform 0.1s ease-out';
-  
-  // Optional: Add glare effect if child exists
-  const glow = el.querySelector('.service-card__glow');
-  if (glow) {
-    glow.style.opacity = '1';
-    glow.style.left = `${x - 110}px`; // Center the 220px glow
-    glow.style.top = `${y - 110}px`;
-  }
-}
+    function handleTilt(e) {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
+    const rotateY = ((x - centerX) / centerX) * 10;
+    
+    el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    el.style.transition = 'transform 0.1s ease-out';
+    
+    // Optional: Add glare effect if child exists
+    // Fix: querySelector might return null if not found
+    const glow = el.querySelector('.service-card__glow') || el.querySelector('.portfolio-card__glow') || el.querySelector('.founder__card-glow');
+    if (glow) {
+        glow.style.opacity = '1';
+        glow.style.left = `${x - 110}px`; // Center the 220px glow
+        glow.style.top = `${y - 110}px`;
+    }
+    }
 
-function resetTilt(e) {
-  const el = e.currentTarget;
-  el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-  el.style.transition = 'transform 0.5s ease';
-  
-  const glow = el.querySelector('.service-card__glow');
-  if (glow) {
-    glow.style.opacity = '0';
-  }
+    function resetTilt(e) {
+    const el = e.currentTarget;
+    el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+    el.style.transition = 'transform 0.5s ease';
+    
+    const glow = el.querySelector('.service-card__glow') || el.querySelector('.portfolio-card__glow') || el.querySelector('.founder__card-glow');
+    if (glow) {
+        glow.style.opacity = '0';
+    }
+    }
 }
 
 /* ===== ANIMATE STATS NUMBERS ===== */
@@ -332,4 +369,3 @@ videos.forEach(video => {
     });
   });
 });
-

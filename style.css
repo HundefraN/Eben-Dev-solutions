@@ -2868,6 +2868,34 @@ body.light-theme .form-input:not(:placeholder-shown)~.form-label {
   transform: translateY(0);
 }
 
+/* Always show controls on touch devices */
+@media (hover: none) {
+  .video-controls {
+    transform: translateY(0);
+  }
+}
+
+/* === GLITCH HOVER EFFECT === */
+.glitch-hover {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-hover:hover {
+  animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+  color: var(--accent-primary);
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(-2deg); }
+  40% { transform: skew(2deg); }
+  60% { transform: skew(-1deg); }
+  80% { transform: skew(1deg); }
+  100% { transform: skew(0deg); }
+}
+
+
 .video-controls button {
   background: none;
   border: none;
@@ -2937,109 +2965,5 @@ body.light-theme .form-input:not(:placeholder-shown)~.form-label {
   text-align: center;
 }
 
-/* ======================================================================
-   CUSTOM VIDEO PLAYER
-   ====================================================================== */
-.video-container {
-  position: relative;
-  width: 100%;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background: #000;
-}
+/* ... (removed duplicate video player styles) ... */
 
-.portfolio__video {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.video-controls {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(8, 18, 34, 0.85);
-  backdrop-filter: blur(10px);
-  padding: 10px 15px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-  z-index: 10;
-  border-top: 1px solid rgba(177, 148, 76, 0.2);
-}
-
-.video-container:hover .video-controls {
-  transform: translateY(0);
-}
-
-.video-controls button {
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: color 0.2s ease, transform 0.2s ease;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.video-controls button:hover {
-  color: var(--accent-primary);
-  transform: scale(1.1);
-}
-
-.progress-bar-container {
-  flex-grow: 1;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 100%;
-  border-radius: 3px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  width: 0%;
-  background: var(--gradient-primary);
-  border-radius: 3px;
-  position: relative;
-}
-
-.progress-bar-fill::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--accent-gold);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.progress-bar-container:hover .progress-bar-fill::after {
-  opacity: 1;
-}
-
-.time-display {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  min-width: 80px;
-  text-align: center;
-}
