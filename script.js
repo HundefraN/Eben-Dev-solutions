@@ -283,3 +283,53 @@ function resetTilt(e) {
   }
 }
 
+/* ===== ANIMATE STATS NUMBERS ===== */
+const stats = document.querySelectorAll('.hero__stat-number, .founder__stat-number');
+
+const statsObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const target = entry.target;
+      const countAttr = target.getAttribute('data-count');
+      
+      if (countAttr) {
+        const countTo = parseInt(countAttr);
+        if (!isNaN(countTo)) {
+          let count = 0;
+          const duration = 2000; // 2 seconds
+          const increment = countTo / (duration / 16); // 60fps
+          
+          const updateCount = () => {
+            count += increment;
+            if (count < countTo) {
+              target.innerText = Math.ceil(count);
+              requestAnimationFrame(updateCount);
+            } else {
+              target.innerText = countTo;
+            }
+          };
+          
+          updateCount();
+        }
+      }
+      observer.unobserve(target);
+    }
+  });
+}, { threshold: 0.5 });
+
+stats.forEach(stat => {
+  statsObserver.observe(stat);
+});
+
+/* ===== VIDEO PLAYBACK CONTROL ===== */
+const videos = document.querySelectorAll('.portfolio__video');
+videos.forEach(video => {
+  video.addEventListener('play', () => {
+    videos.forEach(v => {
+      if (v !== video) {
+        v.pause();
+      }
+    });
+  });
+});
+
