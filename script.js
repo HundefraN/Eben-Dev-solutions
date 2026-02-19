@@ -26,7 +26,7 @@ if (canvas) {
       this.speedX = (Math.random() - 0.5) * 0.4;
       this.speedY = (Math.random() - 0.5) * 0.4;
       this.opacity = Math.random() * 0.4 + 0.1;
-      this.hue = Math.random() > 0.5 ? 240 : 270;
+      this.hue = Math.random() > 0.5 ? 221 : 42;
     }
     update() {
       this.x += this.speedX;
@@ -66,7 +66,7 @@ if (canvas) {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 130) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(99, 102, 241, ${0.06 * (1 - dist / 130)})`;
+          ctx.strokeStyle = `rgba(177, 148, 76, ${0.06 * (1 - dist / 130)})`;
           ctx.lineWidth = 0.5;
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -220,7 +220,7 @@ hoverTargets.forEach(el => {
     if (cursorOutline) {
       cursorOutline.style.width = '64px';
       cursorOutline.style.height = '64px';
-      cursorOutline.style.borderColor = 'rgba(99, 102, 241, 0.5)';
+      cursorOutline.style.borderColor = 'rgba(177, 148, 76, 0.5)';
     }
     if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(2)';
   });
@@ -228,7 +228,7 @@ hoverTargets.forEach(el => {
     if (cursorOutline) {
       cursorOutline.style.width = '42px';
       cursorOutline.style.height = '42px';
-      cursorOutline.style.borderColor = 'rgba(99, 102, 241, 0.35)';
+      cursorOutline.style.borderColor = 'rgba(177, 148, 76, 0.35)';
     }
     if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
   });
