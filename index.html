@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eben Dev Solutions | Future of Development</title>
+    <meta name="description"
+        content="Eben Dev Solutions — Cutting-edge web development, mobile apps, UI/UX design, and digital solutions that define the future.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+</head>
+
+<body>
+    <!-- Particle Canvas Background -->
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+    <!-- Aurora gradient mesh -->
+    <div class="aurora-bg" aria-hidden="true">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+    </div>
+
+    <!-- Grid overlay -->
+    <div class="grid-overlay" aria-hidden="true"></div>
+
+    <!-- Noise texture overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+    <div class="cursor-trail" data-cursor-trail></div>
+
+    <!-- HEADER / NAV -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">
+                <div class="logo-glow-wrap">
+                    <img src="assets/logo.png" alt="Eben Dev Solutions Logo" class="logo-img">
+                </div>
+                <span class="logo-text">Eben<span class="logo-accent">Dev</span></span>
+            </a>
+
+            <!-- Hamburger Toggle (MereqTech 2-line style) -->
+            <button class="nav__hamburger" id="nav-toggle" aria-label="Toggle menu">
+                <span class="hamburger__line hamburger__line--1"></span>
+                <span class="hamburger__line hamburger__line--2"></span>
+            </button>
+
+            <!-- Full-screen Overlay Menu -->
+            <div class="nav__overlay" id="nav-overlay">
+                <div class="nav__overlay-bg"></div>
+                <div class="nav__overlay-content">
+                    <!-- Social links on left -->
+                    <div class="nav__overlay-socials">
+                        <a href="#" class="overlay-social-link" data-delay="1">Facebook</a>
+                        <a href="#" class="overlay-social-link" data-delay="2">Twitter</a>
+                        <a href="#" class="overlay-social-link" data-delay="3">Instagram</a>
+                        <a href="#" class="overlay-social-link" data-delay="4">LinkedIn</a>
+                    </div>
+
+                    <!-- Main menu items center -->
+                    <div class="nav__overlay-menu">
+                        <a href="#home" class="overlay-menu-item" data-delay="1">
+                            <span class="overlay-menu-text">Home</span>
+                            <span class="overlay-menu-number">01</span>
+                        </a>
+                        <a href="#services" class="overlay-menu-item" data-delay="2">
+                            <span class="overlay-menu-text">Services</span>
+                            <span class="overlay-menu-number">02</span>
+                        </a>
+                        <a href="#portfolio" class="overlay-menu-item" data-delay="3">
+                            <span class="overlay-menu-text">Work</span>
+                            <span class="overlay-menu-number">03</span>
+                        </a>
+                        <a href="#about" class="overlay-menu-item" data-delay="4">
+                            <span class="overlay-menu-text">About</span>
+                            <span class="overlay-menu-number">04</span>
+                        </a>
+                        <a href="#contact" class="overlay-menu-item" data-delay="5">
+                            <span class="overlay-menu-text">Contact</span>
+                            <span class="overlay-menu-number">05</span>
+                        </a>
+                    </div>
+
+                    <!-- Email CTA on right -->
+                    <div class="nav__overlay-cta">
+                        <a href="mailto:hundefra@gmail.com" class="overlay-email-btn">
+                            <span>Email me!</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav__actions">
+                <button class="theme-toggle" id="theme-button" aria-label="Toggle theme">
+                    <i class="fa-regular fa-moon"></i>
+                </button>
+                <a href="#contact" class="nav__cta hide-mobile">
+                    <span class="cta-glow"></span>
+                    Let's Talk <i class="fa-solid fa-arrow-up-right"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <!-- ===== HERO SECTION ===== -->
+        <section class="hero section" id="home">
+            <div class="hero__container container">
+                <div class="hero__content">
+                    <div class="hero__badge" data-animate="fade-in">
+                        <span class="badge-dot"></span>
+                        <span class="badge-pulse"></span>
+                        Available for new projects — 2026
+                    </div>
+
+                    <h1 class="hero__title" data-animate="split-text">
+                        <span class="hero__title-line">I Build</span>
+                        <span class="hero__title-line"><span class="hero__title-gradient">Digital</span></span>
+                        <span class="hero__title-line"><span class="hero__title-outline"
+                                data-text="Masterpieces">Masterpieces</span></span>
+                    </h1>
+
+                    <p class="hero__description" data-animate="fade-up">
+                        Eben Dev Solutions transforms bold ideas into high-performance, visually stunning digital
+                        experiences. I don't just write code — I architect the future.
+                    </p>
+
+                    <div class="hero__actions" data-animate="fade-up">
+                        <a href="#portfolio" class="btn btn--primary">
+                            <span class="btn__bg"></span>
+                            <span class="btn__text">View My Work</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#contact" class="btn btn--ghost">
+                            <span class="btn__text">Contact Us</span>
+                            <span class="btn__border"></span>
+                        </a>
+                    </div>
+
+                    <div class="hero__stats" data-animate="fade-up">
+                        <div class="hero__stat">
+                            <div class="hero__stat-value">
+                                <span class="hero__stat-number" data-count="50">0</span><span
+                                    class="hero__stat-plus">+</span>
+                            </div>
+                            <span class="hero__stat-label">Projects Completed</span>
+                        </div>
+                        <div class="hero__stat-divider"></div>
+                        <div class="hero__stat">
+                            <div class="hero__stat-value">
+                                <span class="hero__stat-number" data-count="98">0</span><span
+                                    class="hero__stat-plus">%</span>
+                            </div>
+                            <span class="hero__stat-label">Client Satisfaction</span>
+                        </div>
+                        <div class="hero__stat-divider"></div>
+                        <div class="hero__stat">
+                            <div class="hero__stat-value">
+                                <span class="hero__stat-number">24/7</span>
+                            </div>
+                            <span class="hero__stat-label">Support Available</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero__visual">
+                    <!-- Holographic orb -->
+                    <div class="hero__orb">
+                        <div class="orb__ring orb__ring--1"></div>
+                        <div class="orb__ring orb__ring--2"></div>
+                        <div class="orb__ring orb__ring--3"></div>
+                        <div class="orb__ring orb__ring--4"></div>
+                        <div class="orb__core">
+                            <img src="assets/logo.png" alt="" class="orb__logo">
+                        </div>
+                        <div class="orb__particles" id="orb-particles"></div>
+                    </div>
+
+                    <!-- Floating tech cards -->
+                    <div class="hero__float-card float-card-1 glass-morph">
+                        <div class="float-card__icon"><i class="fa-solid fa-code"></i></div>
+                        <span>Clean Code</span>
+                        <div class="float-card__shine"></div>
+                    </div>
+                    <div class="hero__float-card float-card-2 glass-morph">
+                        <div class="float-card__icon"><i class="fa-solid fa-bolt"></i></div>
+                        <span>Lightning Fast</span>
+                        <div class="float-card__shine"></div>
+                    </div>
+                    <div class="hero__float-card float-card-3 glass-morph">
+                        <div class="float-card__icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span>Secure</span>
+                        <div class="float-card__shine"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero__scroll">
+                <a href="#services" class="scroll-indicator">
+                    <div class="scroll-indicator__line"></div>
+                    <span class="scroll-indicator__text">SCROLL</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ===== TECH MARQUEE ===== -->
+        <div class="marquee-section">
+            <div class="marquee-label">MY TECH STACK</div>
+            <div class="marquee-track">
+                <div class="marquee-content">
+                    <span class="marquee-item"><i class="fa-brands fa-react"></i> React</span>
+                    <span class="marquee-item"><i class="fa-brands fa-node-js"></i> Node.js</span>
+                    <span class="marquee-item"><i class="fa-brands fa-python"></i> Python</span>
+                    <span class="marquee-item"><i class="fa-brands fa-figma"></i> Figma</span>
+                    <span class="marquee-item"><i class="fa-brands fa-aws"></i> AWS</span>
+                    <span class="marquee-item"><i class="fa-brands fa-docker"></i> Docker</span>
+                    <span class="marquee-item"><i class="fa-brands fa-flutter"></i> Flutter</span>
+                    <span class="marquee-item"><i class="fa-solid fa-fire"></i> Firebase</span>
+                    <span class="marquee-item"><i class="fa-brands fa-js"></i> JavaScript</span>
+                    <span class="marquee-item"><i class="fa-solid fa-database"></i> PostgreSQL</span>
+                    <!-- Duplicate for seamless loop -->
+                    <span class="marquee-item"><i class="fa-brands fa-react"></i> React</span>
+                    <span class="marquee-item"><i class="fa-brands fa-node-js"></i> Node.js</span>
+                    <span class="marquee-item"><i class="fa-brands fa-python"></i> Python</span>
+                    <span class="marquee-item"><i class="fa-brands fa-figma"></i> Figma</span>
+                    <span class="marquee-item"><i class="fa-brands fa-aws"></i> AWS</span>
+                    <span class="marquee-item"><i class="fa-brands fa-docker"></i> Docker</span>
+                    <span class="marquee-item"><i class="fa-brands fa-flutter"></i> Flutter</span>
+                    <span class="marquee-item"><i class="fa-solid fa-fire"></i> Firebase</span>
+                    <span class="marquee-item"><i class="fa-brands fa-js"></i> JavaScript</span>
+                    <span class="marquee-item"><i class="fa-solid fa-database"></i> PostgreSQL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SERVICES SECTION ===== -->
+        <section class="services section" id="services">
+            <div class="container">
+                <div class="section-header" data-animate="reveal">
+                    <span class="section-tag"><i class="fa-solid fa-sparkles"></i> What I do</span>
+                    <h2 class="section__title">My Expertise</h2>
+                    <p class="section__description">I deliver end-to-end digital solutions that drive growth and
+                        innovation</p>
+                </div>
+
+                <div class="services__grid">
+                    <!-- Service 1 -->
+                    <div class="service-card" data-tilt data-animate="reveal">
+                        <div class="service-card__glow"></div>
+                        <div class="service-card__border"></div>
+                        <div class="service-card__icon">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <div class="service-card__number">01</div>
+                        <h3 class="service-card__title">Web Development</h3>
+                        <p class="service-card__text">Custom websites built with cutting-edge technologies, tailored to
+                            your needs — blazing fast & infinitely scalable.</p>
+                        <a href="#contact" class="service-card__link">
+                            Learn more <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="service-card" data-tilt data-animate="reveal">
+                        <div class="service-card__glow"></div>
+                        <div class="service-card__border"></div>
+                        <div class="service-card__icon">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div class="service-card__number">02</div>
+                        <h3 class="service-card__title">UI/UX Design</h3>
+                        <p class="service-card__text">Creating intuitive, beautiful interfaces that captivate users and
+                            deliver seamless experiences across every device.</p>
+                        <a href="#contact" class="service-card__link">
+                            Learn more <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="service-card" data-tilt data-animate="reveal">
+                        <div class="service-card__glow"></div>
+                        <div class="service-card__border"></div>
+                        <div class="service-card__icon">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+                        <div class="service-card__number">03</div>
+                        <h3 class="service-card__title">Backend Solutions</h3>
+                        <p class="service-card__text">Robust server-side architecture and API development powering your
+                            applications securely and efficiently.</p>
+                        <a href="#contact" class="service-card__link">
+                            Learn more <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="service-card" data-tilt data-animate="reveal">
+                        <div class="service-card__glow"></div>
+                        <div class="service-card__border"></div>
+                        <div class="service-card__icon">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <div class="service-card__number">04</div>
+                        <h3 class="service-card__title">Mobile Apps</h3>
+                        <p class="service-card__text">Cross-platform mobile applications with native performance,
+                            stunning interfaces, and delightful user experiences.</p>
+                        <a href="#contact" class="service-card__link">
+                            Learn more <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PROCESS SECTION ===== -->
+        <section class="process section" id="process">
+            <div class="container">
+                <div class="section-header" data-animate="reveal">
+                    <span class="section-tag"><i class="fa-solid fa-diagram-project"></i> How I work</span>
+                    <h2 class="section__title">My Process</h2>
+                    <p class="section__description">A battle-tested workflow that delivers exceptional results, every
+                        time</p>
+                </div>
+
+                <div class="process__timeline">
+                    <div class="process__connector"></div>
+                    <div class="process__step" data-animate="reveal">
+                        <div class="process__step-marker">
+                            <span class="process__step-number">01</span>
+                            <div class="process__step-dot"></div>
+                        </div>
+                        <div class="process__step-content glass-morph">
+                            <div class="process__step-icon"><i class="fa-solid fa-compass"></i></div>
+                            <h3>Discovery & Strategy</h3>
+                            <p>I dive deep into understanding your goals, audience, and vision to create a winning
+                                strategy.</p>
+                        </div>
+                    </div>
+                    <div class="process__step" data-animate="reveal">
+                        <div class="process__step-marker">
+                            <span class="process__step-number">02</span>
+                            <div class="process__step-dot"></div>
+                        </div>
+                        <div class="process__step-content glass-morph">
+                            <div class="process__step-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+                            <h3>Design & Prototype</h3>
+                            <p>I craft pixel-perfect mockups and interactive prototypes for your approval.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="process__step" data-animate="reveal">
+                        <div class="process__step-marker">
+                            <span class="process__step-number">03</span>
+                            <div class="process__step-dot"></div>
+                        </div>
+                        <div class="process__step-content glass-morph">
+                            <div class="process__step-icon"><i class="fa-solid fa-code"></i></div>
+                            <h3>Development & Testing</h3>
+                            <p>Engineers build your product with clean, maintainable code and rigorous quality
+                                assurance.</p>
+                        </div>
+                    </div>
+                    <div class="process__step" data-animate="reveal">
+                        <div class="process__step-marker">
+                            <span class="process__step-number">04</span>
+                            <div class="process__step-dot"></div>
+                        </div>
+                        <div class="process__step-content glass-morph">
+                            <div class="process__step-icon"><i class="fa-solid fa-rocket"></i></div>
+                            <h3>Launch & Support</h3>
+                            <p>I deploy your project and provide ongoing support to ensure long-term success.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PORTFOLIO SECTION ===== -->
+        <section class="portfolio section" id="portfolio">
+            <div class="container">
+                <div class="section-header" data-animate="reveal">
+                    <span class="section-tag"><i class="fa-solid fa-folder-open"></i> My work</span>
+                    <h2 class="section__title">Recent Projects</h2>
+                    <p class="section__description">A showcase of my latest and greatest digital creations</p>
+                </div>
+
+                <div class="portfolio__grid">
+                    <div class="portfolio__card" data-animate="reveal">
+                        <div class="portfolio__card-image">
+                            <div class="portfolio__placeholder gradient-1">
+                                <i class="fa-solid fa-tooth"></i>
+                                <div class="portfolio__placeholder-grid"></div>
+                            </div>
+                            <div class="portfolio__card-overlay">
+                                <a href="#" class="portfolio__card-btn">
+                                    <i class="fa-solid fa-arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portfolio__card-info">
+                            <div class="portfolio__card-tags">
+                                <span class="tag">Database</span>
+                                <span class="tag">Management</span>
+                                <span class="tag">Dental</span>
+                            </div>
+                            <h3 class="portfolio__card-title">Abosto Dental Clinic</h3>
+                            <p class="portfolio__card-desc">A comprehensive clinic database carding system, patient and
+                                staff and clinic management system.</p>
+                        </div>
+                    </div>
+
+                    <div class="portfolio__card" data-animate="reveal">
+                        <div class="portfolio__card-image">
+                            <div class="portfolio__placeholder gradient-2">
+                                <i class="fa-solid fa-music"></i>
+                                <div class="portfolio__placeholder-grid"></div>
+                            </div>
+                            <div class="portfolio__card-overlay">
+                                <a href="#" class="portfolio__card-btn">
+                                    <i class="fa-solid fa-arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portfolio__card-info">
+                            <div class="portfolio__card-tags">
+                                <span class="tag">Mobile App</span>
+                                <span class="tag">Choir</span>
+                                <span class="tag">Rehearsal</span>
+                            </div>
+                            <h3 class="portfolio__card-title">Eltolad App</h3>
+                            <p class="portfolio__card-desc">A specialized choir app which manages members,
+                                contributions, attendance and rehearsals, and more.</p>
+                        </div>
+                    </div>
+
+                    <div class="portfolio__card" data-animate="reveal">
+                        <div class="portfolio__card-image">
+                            <div class="portfolio__placeholder gradient-3">
+                                <i class="fa-solid fa-clinic-medical"></i>
+                                <div class="portfolio__placeholder-grid"></div>
+                            </div>
+                            <div class="portfolio__card-overlay">
+                                <a href="#" class="portfolio__card-btn">
+                                    <i class="fa-solid fa-arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portfolio__card-info">
+                            <div class="portfolio__card-tags">
+                                <span class="tag">Flutter</span>
+                                <span class="tag">Next.js</span>
+                                <span class="tag">PostgreSQL</span>
+                            </div>
+                            <h3 class="portfolio__card-title">Tena Smile Clinic Management System</h3>
+                            <p class="portfolio__card-desc">Designed and deployed the full-stack Tena Smile Clinic
+                                Database System using Flutter and a robust Next.js/PostgreSQL backend. Focused heavily
+                                on HIPAA compliance, implementations of secure role-based access, and real-time data
+                                sync to streamline clinical operations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CEO / FOUNDER SECTION ===== -->
+        <section class="founder section" id="about">
+            <div class="container">
+                <div class="section-header" data-animate="reveal">
+                    <span class="section-tag"><i class="fa-solid fa-crown"></i> Meet the Founder</span>
+                    <h2 class="section__title">The Mind Behind EbenDev</h2>
+                    <p class="section__description">Passion-driven development, one visionary at the helm</p>
+                </div>
+
+                <div class="founder__showcase" data-animate="reveal">
+                    <!-- CEO Profile Card -->
+                    <div class="founder__profile-card">
+                        <div class="founder__card-glow"></div>
+                        <div class="founder__card-border"></div>
+
+                        <!-- Photo Side -->
+                        <div class="founder__photo-wrapper">
+                            <div class="founder__photo-ring founder__photo-ring--1"></div>
+                            <div class="founder__photo-ring founder__photo-ring--2"></div>
+                            <div class="founder__photo-ring founder__photo-ring--3"></div>
+                            <div class="founder__photo-container">
+                                <img src="assets/CEO.png" alt="Hundefra Nassir — CEO & Founder" class="founder__photo">
+                                <div class="founder__photo-overlay"></div>
+                            </div>
+                            <div class="founder__status-badge">
+                                <span class="founder__status-dot"></span>
+                                <span>Available for hire</span>
+                            </div>
+                        </div>
+
+                        <!-- Info Side -->
+                        <div class="founder__info">
+                            <div class="founder__name-group">
+                                <h3 class="founder__name">Hundefra Nassir</h3>
+                                <span class="founder__title">CEO & Founder</span>
+                            </div>
+
+                            <p class="founder__bio">
+                                With <strong>7+ years</strong> of hands-on experience in software development, I lead
+                                Eben Dev Solutions with a passion for crafting stunning digital experiences. From mobile
+                                apps to full-stack web platforms, I turn complex problems into elegant, powerful
+                                solutions.
+                            </p>
+
+                            <!-- Skills -->
+                            <div class="founder__skills">
+                                <div class="founder__skill-tag">
+                                    <i class="fa-brands fa-flutter"></i>
+                                    <span>Flutter</span>
+                                    <div class="founder__skill-glow"></div>
+                                </div>
+                                <div class="founder__skill-tag">
+                                    <i class="fa-brands fa-python"></i>
+                                    <span>Python</span>
+                                    <div class="founder__skill-glow"></div>
+                                </div>
+                                <div class="founder__skill-tag">
+                                    <i class="fa-brands fa-html5"></i>
+                                    <span>HTML</span>
+                                    <div class="founder__skill-glow"></div>
+                                </div>
+                                <div class="founder__skill-tag">
+                                    <i class="fa-brands fa-css3-alt"></i>
+                                    <span>CSS</span>
+                                    <div class="founder__skill-glow"></div>
+                                </div>
+                            </div>
+
+                            <!-- Experience Bar -->
+                            <div class="founder__experience">
+                                <div class="founder__exp-header">
+                                    <span class="founder__exp-label">Experience</span>
+                                    <span class="founder__exp-value">7+ Years</span>
+                                </div>
+                                <div class="founder__exp-bar">
+                                    <div class="founder__exp-fill" data-width="88%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Contact Links -->
+                            <div class="founder__contact-links">
+                                <a href="tel:+251925526298" class="founder__contact-item" aria-label="Phone">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <span>+251925526298</span>
+                                </a>
+                                <a href="mailto:hundefra@gmail.com" class="founder__contact-item" aria-label="Email">
+                                    <i class="fa-regular fa-envelope"></i>
+                                    <span>hundefra@gmail.com</span>
+                                </a>
+                                <a href="https://t.me/Hundefra" target="_blank" class="founder__contact-item"
+                                    aria-label="Telegram">
+                                    <i class="fa-brands fa-telegram"></i>
+                                    <span>@Hundefra</span>
+                                </a>
+                                <a href="https://www.linkedin.com/in/hundefra-nassir/" target="_blank"
+                                    class="founder__contact-item" aria-label="LinkedIn">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                    <span>Hundefra Nassir</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div class="founder__stats-row">
+                        <div class="founder__stat-card glass-morph" data-animate="reveal">
+                            <div class="founder__stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                            <span class="founder__stat-number" data-count="7">0</span>
+                            <span class="founder__stat-suffix">+</span>
+                            <span class="founder__stat-label">Years Experience</span>
+                        </div>
+                        <div class="founder__stat-card glass-morph" data-animate="reveal">
+                            <div class="founder__stat-icon"><i class="fa-solid fa-rocket"></i></div>
+                            <span class="founder__stat-number" data-count="50">0</span>
+                            <span class="founder__stat-suffix">+</span>
+                            <span class="founder__stat-label">Projects Delivered</span>
+                        </div>
+                        <div class="founder__stat-card glass-morph" data-animate="reveal">
+                            <div class="founder__stat-icon"><i class="fa-solid fa-face-smile"></i></div>
+                            <span class="founder__stat-number" data-count="30">0</span>
+                            <span class="founder__stat-suffix">+</span>
+                            <span class="founder__stat-label">Happy Clients</span>
+                        </div>
+                        <div class="founder__stat-card glass-morph" data-animate="reveal">
+                            <div class="founder__stat-icon"><i class="fa-solid fa-code"></i></div>
+                            <span class="founder__stat-number" data-count="4">0</span>
+                            <span class="founder__stat-suffix"></span>
+                            <span class="founder__stat-label">Core Technologies</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT SECTION ===== -->
+        <section class="contact section" id="contact">
+            <div class="container">
+                <div class="section-header" data-animate="reveal">
+                    <span class="section-tag"><i class="fa-solid fa-paper-plane"></i> Get in touch</span>
+                    <h2 class="section__title">Let's Build Something Amazing</h2>
+                    <p class="section__description">Have a project in mind? We'd love to hear about it</p>
+                </div>
+
+                <div class="contact__wrapper">
+                    <div class="contact__info-side" data-animate="reveal">
+                        <h3 class="contact__info-heading">Talk to me</h3>
+                        <p class="contact__info-text">I'm ready to help you turn your vision into reality. Reach out
+                            through any channel.</p>
+
+                        <div class="contact__cards">
+                            <a href="mailto:hundefra@gmail.com" class="contact__card glass-morph">
+                                <div class="contact__card-icon">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </div>
+                                <div class="contact__card-details">
+                                    <h4>Email</h4>
+                                    <span>hundefra@gmail.com</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right contact__card-arrow"></i>
+                            </a>
+
+                            <a href="tel:+251925526298" class="contact__card glass-morph">
+                                <div class="contact__card-icon">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div class="contact__card-details">
+                                    <h4>Phone</h4>
+                                    <span>+251925526298</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right contact__card-arrow"></i>
+                            </a>
+
+                            <a href="https://t.me/Hundefra" target="_blank" class="contact__card glass-morph">
+                                <div class="contact__card-icon">
+                                    <i class="fa-brands fa-telegram"></i>
+                                </div>
+                                <div class="contact__card-details">
+                                    <h4>Telegram</h4>
+                                    <span>@Hundefra</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right contact__card-arrow"></i>
+                            </a>
+
+                            <a href="https://www.linkedin.com/in/hundefra-nassir/" target="_blank"
+                                class="contact__card glass-morph">
+                                <div class="contact__card-icon">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </div>
+                                <div class="contact__card-details">
+                                    <h4>LinkedIn</h4>
+                                    <span>Hundefra Nassir</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right contact__card-arrow"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact__form-side glass-morph" data-animate="reveal">
+                        <h3 class="contact__form-heading">Send us a message</h3>
+                        <form action="https://formspree.io/f/mbdakwdo" method="POST" class="contact__form"
+                            id="contact-form">
+                            <div class="form-group">
+                                <input type="text" id="contact-name" name="name" class="form-input" placeholder=" "
+                                    required>
+                                <label for="contact-name" class="form-label">Your Name</label>
+                                <div class="form-highlight"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="contact-email" name="email" class="form-input" placeholder=" "
+                                    required>
+                                <label for="contact-email" class="form-label">Your Email</label>
+                                <div class="form-highlight"></div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="contact-message" name="message" class="form-input form-textarea"
+                                    placeholder=" " rows="5" required></textarea>
+                                <label for="contact-message" class="form-label">Your Message</label>
+                                <div class="form-highlight"></div>
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--full">
+                                <span class="btn__bg"></span>
+                                <span class="btn__text">Send Message</span>
+                                <i class="fa-regular fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <a href="#" class="footer__logo">
+                        <div class="logo-glow-wrap">
+                            <img src="assets/logo.png" alt="Eben Dev Solutions Logo" class="logo-img">
+                        </div>
+                        <span class="logo-text">Eben<span class="logo-accent">Dev</span></span>
+                    </a>
+                    <p class="footer__tagline">Crafting digital masterpieces that define the future of tomorrow.</p>
+                </div>
+
+                <div class="footer__links-group">
+                    <h4 class="footer__links-title">Navigation</h4>
+                    <ul class="footer__links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#portfolio">Work</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__links-group">
+                    <h4 class="footer__links-title">Services</h4>
+                    <ul class="footer__links">
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">UI/UX Design</a></li>
+                        <li><a href="#services">Backend Solutions</a></li>
+                        <li><a href="#services">Mobile Apps</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__links-group">
+                    <h4 class="footer__links-title">Connect</h4>
+                    <div class="footer__socials">
+                        <a href="https://t.me/Hundefra" target="_blank" class="footer__social-link"
+                            aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+                        <a href="https://www.linkedin.com/in/hundefra-nassir/" target="_blank"
+                            class="footer__social-link" aria-label="LinkedIn"><i
+                                class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="mailto:hundefra@gmail.com" class="footer__social-link" aria-label="Email"><i
+                                class="fa-regular fa-envelope"></i></a>
+                        <a href="tel:+251925526298" class="footer__social-link" aria-label="Phone"><i
+                                class="fa-solid fa-phone"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <span class="footer__copy">&copy; 2026 Eben Dev Solutions. All rights reserved.</span>
+                <div class="footer__bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCROLL UP -->
+    <a href="#" class="scrollup" id="scroll-up" aria-label="Scroll to top">
+        <i class="fa-solid fa-arrow-up scrollup__icon"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
