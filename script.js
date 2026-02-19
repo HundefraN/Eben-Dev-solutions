@@ -46,7 +46,9 @@ if (canvas) {
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${this.hue}, 80%, 70%, ${this.opacity})`;
+      const sat = '80%';
+      const light = '70%';
+      ctx.fillStyle = `hsla(${this.hue}, ${sat}, ${light}, ${this.opacity})`;
       ctx.fill();
     }
   }
@@ -59,6 +61,9 @@ if (canvas) {
   initParticles();
 
   function drawConnections() {
+    const strokeColor = '177, 148, 76'; // Gold
+    const baseOpacity = 0.06;
+
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
@@ -66,7 +71,7 @@ if (canvas) {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 130) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(177, 148, 76, ${0.06 * (1 - dist / 130)})`;
+          ctx.strokeStyle = `rgba(${strokeColor}, ${baseOpacity * (1 - dist / 130)})`;
           ctx.lineWidth = 0.5;
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -163,26 +168,6 @@ function scrollUp() {
 }
 window.addEventListener('scroll', scrollUp);
 
-/* ===== THEME TOGGLE ===== */
-const themeButton = document.getElementById('theme-button');
-const selectedTheme = localStorage.getItem('selected-theme');
-
-if (selectedTheme === 'light') {
-  document.body.classList.add('light-theme');
-  const icon = themeButton.querySelector('i');
-  icon.classList.remove('fa-moon');
-  icon.classList.add('fa-sun');
-}
-
-themeButton.addEventListener('click', () => {
-  document.body.classList.toggle('light-theme');
-  const icon = themeButton.querySelector('i');
-  icon.classList.toggle('fa-sun');
-  icon.classList.toggle('fa-moon');
-  localStorage.setItem('selected-theme',
-    document.body.classList.contains('light-theme') ? 'light' : 'dark');
-});
-
 /* ===== CUSTOM CURSOR ===== */
 const cursorDot = document.querySelector('[data-cursor-dot]');
 const cursorOutline = document.querySelector('[data-cursor-outline]');
@@ -241,275 +226,60 @@ const revealElements = document.querySelectorAll(
   '.contact__info-side, .contact__form-side, .hero__stats'
 );
 
-revealElements.forEach((el, i) => {
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+revealElements.forEach((el) => {
   el.classList.add('reveal');
-
-  // Add directional animations based on position
-  const parent = el.parentElement;
-  // Staggering logic for grid items
-  const siblings = Array.from(parent.children).filter(c =>
-    c.classList.contains('service-card') ||
-    c.classList.contains('portfolio__card') ||
-    c.classList.contains('process__step') ||
-    c.classList.contains('founder__stat-card')
-  );
-  const index = siblings.indexOf(el);
-
-  if (index >= 0 && index < 8) {
-    el.classList.add(`reveal-delay-${index + 1}`);
-  }
-
-  // Specific reveals
-  if (el.classList.contains('founder__profile-card')) {
-    el.classList.add('reveal--scale');
-  }
-
-  // Contact: info from left, form from right
-  if (el.classList.contains('contact__info-side')) {
-    el.classList.add('reveal--left');
-  }
-  if (el.classList.contains('contact__form-side')) {
-    el.classList.add('reveal--right');
-  }
+  revealObserver.observe(el);
 });
 
-const revealObserver = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.06, rootMargin: '0px 0px -20px 0px' }
-);
-revealElements.forEach(el => revealObserver.observe(el));
+/* ===== TILT EFFECT FOR CARDS (Realistic & Free Style) ===== */
+const tiltElements = document.querySelectorAll('.service-card, .hero__stats, .portfolio__card, .testimonial-card, .contact__card, .hero__float-card');
 
-/* ===== ANIMATED COUNTERS ===== */
-const counterSections = document.querySelectorAll('.hero__stats, .about__metrics, .founder__stats-row, .founder__experience');
-const counterObserver = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const counters = entry.target.querySelectorAll('[data-count]');
-        counters.forEach(counter => {
-          const target = parseInt(counter.getAttribute('data-count'));
-          const duration = 1100;
-          const startTime = performance.now();
-          function update(t) {
-            const elapsed = t - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 4);
-            counter.textContent = Math.round(target * eased);
-            if (progress < 1) requestAnimationFrame(update);
-            else counter.textContent = target;
-          }
-          requestAnimationFrame(update);
-        });
-        counterObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.3 }
-);
-counterSections.forEach(s => counterObserver.observe(s));
-
-/* ===== 3D TILT ON SERVICE CARDS ===== */
-document.querySelectorAll('[data-tilt]').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -6;
-    const rotateY = ((x - centerX) / centerX) * 6;
-    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
-    // Move glow to follow mouse
-    const glow = card.querySelector('.service-card__glow');
-    if (glow) {
-      glow.style.left = `${x - 110}px`;
-      glow.style.top = `${y - 110}px`;
-      glow.style.opacity = '1';
-    }
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
-    const glow = card.querySelector('.service-card__glow');
-    if (glow) glow.style.opacity = '0';
-  });
+tiltElements.forEach(el => {
+  el.addEventListener('mousemove', handleTilt);
+  el.addEventListener('mouseleave', resetTilt);
 });
 
-/* ===== MAGNETIC BUTTONS ===== */
-document.querySelectorAll('.btn--primary, .nav__cta').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    btn.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px) translateY(-3px)`;
-  });
-  btn.addEventListener('mouseleave', () => {
-    btn.style.transform = 'translate(0, 0)';
-  });
-});
-
-/* ===== PARALLAX GHOST TEXT (MereqTech-style) ===== */
-function addGhostText() {
-  const ghostTextConfig = [
-    { selector: '#services', text: 'Services' },
-    { selector: '#portfolio', text: 'Recent Works' },
-    { selector: '#about', text: 'Founder' },
-    { selector: '#contact', text: 'Say Hello' }
-  ];
-
-  ghostTextConfig.forEach(({ selector, text }) => {
-    const section = document.querySelector(selector);
-    if (section) {
-      const ghostEl = document.createElement('div');
-      ghostEl.className = 'section-ghost-text';
-      ghostEl.textContent = text;
-      ghostEl.setAttribute('aria-hidden', 'true');
-      section.style.position = 'relative';
-      section.style.overflow = 'hidden';
-      section.insertBefore(ghostEl, section.firstChild);
-    }
-  });
-}
-addGhostText();
-
-/* Parallax effect on ghost text */
-let ghostTicking = false;
-window.addEventListener('scroll', () => {
-  if (!ghostTicking) {
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-      document.querySelectorAll('.section-ghost-text').forEach(ghost => {
-        const section = ghost.parentElement;
-        const rect = section.getBoundingClientRect();
-        // Only apply parallax when section is in view
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
-          const offset = (progress - 0.5) * 80; // Subtle parallax offset
-          ghost.style.transform = `translateY(calc(-50% + ${offset}px))`;
-        }
-      });
-      ghostTicking = false;
-    });
-    ghostTicking = true;
+function handleTilt(e) {
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  
+  const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
+  const rotateY = ((x - centerX) / centerX) * 10;
+  
+  el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  el.style.transition = 'transform 0.1s ease-out';
+  
+  // Optional: Add glare effect if child exists
+  const glow = el.querySelector('.service-card__glow');
+  if (glow) {
+    glow.style.opacity = '1';
+    glow.style.left = `${x - 110}px`; // Center the 220px glow
+    glow.style.top = `${y - 110}px`;
   }
-}, { passive: true });
-
-/* ===== PARALLAX ===== */
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-      const heroVisual = document.querySelector('.hero__visual');
-      if (heroVisual && scrollY < window.innerHeight) {
-        heroVisual.style.transform = `translateY(${scrollY * 0.12}px)`;
-      }
-      ticking = false;
-    });
-    ticking = true;
-  }
-}, { passive: true });
-
-/* ===== FORM SUBMISSION (Formspree) ===== */
-const contactForm = document.getElementById('contact-form');
-if (contactForm) {
-  contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = contactForm.querySelector('.btn');
-    const originalHTML = btn.innerHTML;
-
-    // 1. Change button state to sending
-    btn.innerHTML = '<span class="btn__bg"></span><span class="btn__text">Sending...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
-    btn.style.pointerEvents = 'none';
-
-    // 2. Prepare data
-    const formData = new FormData(contactForm);
-
-    try {
-      // 3. Send to Formspree
-      // NOTE: Replace 'YOUR_FORMSPREE_ID' in index.html with your actual ID from formspree.io
-      const response = await fetch(contactForm.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        // Success state
-        btn.innerHTML = '<span class="btn__bg" style="background:linear-gradient(135deg,#10b981,#059669)"></span><span class="btn__text">Message Sent!</span> <i class="fa-solid fa-check"></i>';
-        contactForm.reset();
-
-        // Return button to original state after delay
-        setTimeout(() => {
-          btn.innerHTML = originalHTML;
-          btn.style.pointerEvents = '';
-        }, 2500);
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Formspree error');
-      }
-    } catch (error) {
-      // Error state
-      console.error('Form Error:', error);
-      btn.innerHTML = '<span class="btn__bg" style="background:linear-gradient(135deg,#ef4444,#dc2626)"></span><span class="btn__text">Config Required!</span> <i class="fa-solid fa-triangle-exclamation"></i>';
-
-      // Provide a helpful hint
-      alert("Almost there! To make this work:\n1. Go to Formspree.io and create a free account.\n2. Create a 'New Form' and copy the 'Form ID'.\n3. Replace 'YOUR_FORMSPREE_ID' in your index.html file with your real ID.");
-
-      setTimeout(() => {
-        btn.innerHTML = originalHTML;
-        btn.style.pointerEvents = '';
-      }, 5000);
-    }
-  });
 }
 
-/* ===== HERO TITLE ANIMATION (Enhanced MereqTech-style stagger) ===== */
-window.addEventListener('load', () => {
-  document.body.style.opacity = '1';
-  // Stagger hero title lines with MereqTech-style clip reveal
-  document.querySelectorAll('.hero__title-line').forEach((line, i) => {
-    line.style.opacity = '0';
-    line.style.transform = 'translateY(50px)';
-    line.style.transition = `opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${0.15 + i * 0.08}s, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${0.15 + i * 0.08}s`;
-    requestAnimationFrame(() => {
-      line.style.opacity = '1';
-      line.style.transform = 'translateY(0)';
-    });
-  });
-});
+function resetTilt(e) {
+  const el = e.currentTarget;
+  el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+  el.style.transition = 'transform 0.5s ease';
+  
+  const glow = el.querySelector('.service-card__glow');
+  if (glow) {
+    glow.style.opacity = '0';
+  }
+}
 
-/* ===== SMOOTH SCROLL PERFORMANCE ===== */
-let scrollTimer;
-window.addEventListener('scroll', () => {
-  if (scrollTimer) return;
-  scrollTimer = setTimeout(() => { scrollTimer = null; }, 16);
-}, { passive: true });
-
-/* ===== SMOOTH SECTION SCROLL (MereqTech-style smooth navigation) ===== */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const targetId = this.getAttribute('href');
-    if (targetId === '#') return;
-
-    const targetEl = document.querySelector(targetId);
-    if (targetEl) {
-      e.preventDefault();
-      const headerHeight = document.getElementById('header').offsetHeight;
-      const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
-    }
-  });
-});

@@ -57,49 +57,7 @@
   --z-cursor: 9999;
 }
 
-body.light-theme {
-  --bg-primary: #F5F7FA;
-  --bg-secondary: #E8ECF2;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-glass: rgba(255, 255, 255, 0.6);
-  --bg-glass-hover: rgba(255, 255, 255, 0.9);
-  --border-glass: rgba(17, 39, 75, 0.1);
-  --border-glass-hover: rgba(17, 39, 75, 0.2);
-  --accent-primary: #11274B;
-  /* Deep Blue (Primary in Light Mode) */
-  --accent-secondary: #B1944C;
-  /* Gold (Secondary in Light Mode) */
-  --accent-glow: rgba(177, 148, 76, 0.15);
-  --btn-text-color: #FFFFFF;
-  /* White text for Blue button */
-  --gradient-primary: linear-gradient(135deg, #11274B, #2A4B7C);
-  /* Blue Gradient */
-  --gradient-secondary: linear-gradient(135deg, #B1944C, #F2D06B);
-  /* Gold Gradient */
-  --text-primary: #11274B;
-  --text-secondary: rgba(17, 39, 75, 0.7);
-  --text-muted: rgba(17, 39, 75, 0.45);
-  --shadow-sm: 0 2px 10px rgba(17, 39, 75, 0.06);
-  --shadow-md: 0 8px 40px rgba(17, 39, 75, 0.08);
-  --shadow-lg: 0 24px 80px rgba(17, 39, 75, 0.1);
-  --shadow-glow: 0 0 50px rgba(177, 148, 76, 0.1);
-}
 
-body.light-theme .aurora {
-  opacity: 0.12;
-}
-
-body.light-theme .noise-overlay {
-  opacity: 0.015;
-}
-
-body.light-theme .grid-overlay {
-  opacity: 0.015;
-}
-
-body.light-theme #particle-canvas {
-  opacity: 0.15;
-}
 
 *,
 *::before,
@@ -295,7 +253,7 @@ textarea {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: 1.5rem;
+  padding-inline: 2rem;
 }
 
 .section {
@@ -456,9 +414,7 @@ textarea {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
-body.light-theme .header.scroll-header {
-  background: rgba(245, 245, 255, 0.8);
-}
+
 
 .nav {
   max-width: var(--container-max);
@@ -589,9 +545,8 @@ body.light-theme .header.scroll-header {
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-body.light-theme .nav__overlay-bg {
-  background: #000000;
-}
+
+
 
 .nav__overlay.is-open .nav__overlay-bg {
   transform: scaleY(1);
@@ -1679,6 +1634,27 @@ body.light-theme .nav__overlay-bg {
   line-height: 1.65;
 }
 
+.portfolio__video {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+  background: #000;
+  display: block;
+}
+
+.portfolio__img {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+  background: #000;
+  display: block;
+  transition: transform var(--transition-smooth);
+}
+
+.portfolio__card:hover .portfolio__img {
+  transform: scale(1.05);
+}
+
 /* === FOUNDER / CEO SECTION === */
 .founder__showcase {
   max-width: 1000px;
@@ -2596,9 +2572,7 @@ body.light-theme .form-input:not(:placeholder-shown)~.form-label {
   will-change: transform;
 }
 
-body.light-theme .section-ghost-text {
-  opacity: 0.03;
-}
+
 
 /* Smooth text reveal animation for section titles */
 .title-reveal {

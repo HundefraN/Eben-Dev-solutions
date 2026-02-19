@@ -34,6 +34,11 @@
     <!-- Noise texture overlay -->
     <div class="noise-overlay" aria-hidden="true"></div>
 
+    <!-- Scanline Effect -->
+    <div class="scanline" aria-hidden="true"></div>
+
+
+
     <!-- Custom Cursor -->
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-outline" data-cursor-outline></div>
@@ -101,9 +106,7 @@
             </div>
 
             <div class="nav__actions">
-                <button class="theme-toggle" id="theme-button" aria-label="Toggle theme">
-                    <i class="fa-regular fa-moon"></i>
-                </button>
+
                 <a href="#contact" class="nav__cta hide-mobile">
                     <span class="cta-glow"></span>
                     Let's Talk <i class="fa-solid fa-arrow-up-right"></i>
@@ -255,14 +258,14 @@
 
                 <div class="services__grid">
                     <!-- Service 1 -->
-                    <div class="service-card" data-tilt data-animate="reveal">
+                    <div class="service-card cyber-card" data-tilt data-animate="reveal">
                         <div class="service-card__glow"></div>
                         <div class="service-card__border"></div>
                         <div class="service-card__icon">
                             <i class="fa-solid fa-laptop-code"></i>
                         </div>
                         <div class="service-card__number">01</div>
-                        <h3 class="service-card__title">Web Development</h3>
+                        <h3 class="service-card__title glitch-hover" data-text="Web Development">Web Development</h3>
                         <p class="service-card__text">Custom websites built with cutting-edge technologies, tailored to
                             your needs — blazing fast & infinitely scalable.</p>
                         <a href="#contact" class="service-card__link">
@@ -271,14 +274,14 @@
                     </div>
 
                     <!-- Service 2 -->
-                    <div class="service-card" data-tilt data-animate="reveal">
+                    <div class="service-card cyber-card" data-tilt data-animate="reveal">
                         <div class="service-card__glow"></div>
                         <div class="service-card__border"></div>
                         <div class="service-card__icon">
                             <i class="fa-solid fa-wand-magic-sparkles"></i>
                         </div>
                         <div class="service-card__number">02</div>
-                        <h3 class="service-card__title">UI/UX Design</h3>
+                        <h3 class="service-card__title glitch-hover" data-text="UI/UX Design">UI/UX Design</h3>
                         <p class="service-card__text">Creating intuitive, beautiful interfaces that captivate users and
                             deliver seamless experiences across every device.</p>
                         <a href="#contact" class="service-card__link">
@@ -287,14 +290,14 @@
                     </div>
 
                     <!-- Service 3 -->
-                    <div class="service-card" data-tilt data-animate="reveal">
+                    <div class="service-card cyber-card" data-tilt data-animate="reveal">
                         <div class="service-card__glow"></div>
                         <div class="service-card__border"></div>
                         <div class="service-card__icon">
                             <i class="fa-solid fa-server"></i>
                         </div>
                         <div class="service-card__number">03</div>
-                        <h3 class="service-card__title">Backend Solutions</h3>
+                        <h3 class="service-card__title glitch-hover" data-text="Backend Solutions">Backend Solutions</h3>
                         <p class="service-card__text">Robust server-side architecture and API development powering your
                             applications securely and efficiently.</p>
                         <a href="#contact" class="service-card__link">
@@ -303,14 +306,14 @@
                     </div>
 
                     <!-- Service 4 -->
-                    <div class="service-card" data-tilt data-animate="reveal">
+                    <div class="service-card cyber-card" data-tilt data-animate="reveal">
                         <div class="service-card__glow"></div>
                         <div class="service-card__border"></div>
                         <div class="service-card__icon">
                             <i class="fa-solid fa-mobile-screen-button"></i>
                         </div>
                         <div class="service-card__number">04</div>
-                        <h3 class="service-card__title">Mobile Apps</h3>
+                        <h3 class="service-card__title glitch-hover" data-text="Mobile Apps">Mobile Apps</h3>
                         <p class="service-card__text">Cross-platform mobile applications with native performance,
                             stunning interfaces, and delightful user experiences.</p>
                         <a href="#contact" class="service-card__link">
@@ -365,7 +368,7 @@
                         <div class="process__step-content glass-morph">
                             <div class="process__step-icon"><i class="fa-solid fa-code"></i></div>
                             <h3>Development & Testing</h3>
-                            <p>Engineers build your product with clean, maintainable code and rigorous quality
+                            <p>I build your product with clean, maintainable code and rigorous quality
                                 assurance.</p>
                         </div>
                     </div>
@@ -394,17 +397,13 @@
                 </div>
 
                 <div class="portfolio__grid">
-                    <div class="portfolio__card" data-animate="reveal">
+                    <div class="portfolio__card" data-animate="reveal" data-tilt>
+                        <div class="portfolio-card__glow"></div>
                         <div class="portfolio__card-image">
-                            <div class="portfolio__placeholder gradient-1">
-                                <i class="fa-solid fa-tooth"></i>
-                                <div class="portfolio__placeholder-grid"></div>
-                            </div>
-                            <div class="portfolio__card-overlay">
-                                <a href="#" class="portfolio__card-btn">
-                                    <i class="fa-solid fa-arrow-up-right"></i>
-                                </a>
-                            </div>
+                            <video class="portfolio__video" controls>
+                                <source src="assets/ADC_DB-2.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                         <div class="portfolio__card-info">
                             <div class="portfolio__card-tags">
@@ -412,13 +411,14 @@
                                 <span class="tag">Management</span>
                                 <span class="tag">Dental</span>
                             </div>
-                            <h3 class="portfolio__card-title">Abosto Dental Clinic</h3>
+                            <h3 class="portfolio__card-title glitch-hover" data-text="Abosto Dental Clinic">Abosto Dental Clinic</h3>
                             <p class="portfolio__card-desc">A comprehensive clinic database carding system, patient and
                                 staff and clinic management system.</p>
                         </div>
                     </div>
 
-                    <div class="portfolio__card" data-animate="reveal">
+                    <div class="portfolio__card" data-animate="reveal" data-tilt>
+                        <div class="portfolio-card__glow"></div>
                         <div class="portfolio__card-image">
                             <div class="portfolio__placeholder gradient-2">
                                 <i class="fa-solid fa-music"></i>
@@ -436,18 +436,16 @@
                                 <span class="tag">Choir</span>
                                 <span class="tag">Rehearsal</span>
                             </div>
-                            <h3 class="portfolio__card-title">Eltolad App</h3>
+                            <h3 class="portfolio__card-title glitch-hover" data-text="Eltolad App">Eltolad App</h3>
                             <p class="portfolio__card-desc">A specialized choir app which manages members,
                                 contributions, attendance and rehearsals, and more.</p>
                         </div>
                     </div>
 
-                    <div class="portfolio__card" data-animate="reveal">
+                    <div class="portfolio__card" data-animate="reveal" data-tilt>
+                        <div class="portfolio-card__glow"></div>
                         <div class="portfolio__card-image">
-                            <div class="portfolio__placeholder gradient-3">
-                                <i class="fa-solid fa-clinic-medical"></i>
-                                <div class="portfolio__placeholder-grid"></div>
-                            </div>
+                            <img src="assets/tena_smile.png" alt="Tena Smile Clinic" class="portfolio__img">
                             <div class="portfolio__card-overlay">
                                 <a href="#" class="portfolio__card-btn">
                                     <i class="fa-solid fa-arrow-up-right"></i>
@@ -460,7 +458,7 @@
                                 <span class="tag">Next.js</span>
                                 <span class="tag">PostgreSQL</span>
                             </div>
-                            <h3 class="portfolio__card-title">Tena Smile Clinic Management System</h3>
+                            <h3 class="portfolio__card-title glitch-hover" data-text="Tena Smile Clinic">Tena Smile Clinic</h3>
                             <p class="portfolio__card-desc">Designed and deployed the full-stack Tena Smile Clinic
                                 Database System using Flutter and a robust Next.js/PostgreSQL backend. Focused heavily
                                 on HIPAA compliance, implementations of secure role-based access, and real-time data
