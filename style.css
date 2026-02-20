@@ -536,6 +536,7 @@ textarea {
   transform: translateX(-4px);
   width: 24px;
 }
+
 .hamburger__line--2 {
   transform: translateX(4px);
   width: 16px;
@@ -559,7 +560,8 @@ textarea {
 .nav__hamburger.is-active .hamburger__line {
   background: var(--bg-primary);
   width: 24px;
-  transform: translateX(0); /* Ensure they are centered */
+  transform: translateX(0);
+  /* Ensure they are centered */
 }
 
 .nav__hamburger.is-active .hamburger__line--1 {
@@ -2830,6 +2832,7 @@ body.light-theme .form-input:not(:placeholder-shown)~.form-label {
     margin-top: 2rem;
   }
 }
+
 /* ======================================================================
    CUSTOM VIDEO PLAYER
    ====================================================================== */
@@ -2887,12 +2890,29 @@ body.light-theme .form-input:not(:placeholder-shown)~.form-label {
 }
 
 @keyframes glitch-skew {
-  0% { transform: skew(0deg); }
-  20% { transform: skew(-2deg); }
-  40% { transform: skew(2deg); }
-  60% { transform: skew(-1deg); }
-  80% { transform: skew(1deg); }
-  100% { transform: skew(0deg); }
+  0% {
+    transform: skew(0deg);
+  }
+
+  20% {
+    transform: skew(-2deg);
+  }
+
+  40% {
+    transform: skew(2deg);
+  }
+
+  60% {
+    transform: skew(-1deg);
+  }
+
+  80% {
+    transform: skew(1deg);
+  }
+
+  100% {
+    transform: skew(0deg);
+  }
 }
 
 
@@ -2966,4 +2986,3 @@ body.light-theme .form-input:not(:placeholder-shown)~.form-label {
 }
 
 /* ... (removed duplicate video player styles) ... */
-
